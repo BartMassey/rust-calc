@@ -1,5 +1,6 @@
 // Copyright © 2018 Bart Massey
 
+// Gcd example from Blandy & Orendorff, ch 1.
 // Calculate the common GCD of a list of numbers
 // presented as command-lne arguments.
 
