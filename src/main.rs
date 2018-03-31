@@ -23,9 +23,10 @@ fn gcd(mut n: u64, mut m: u64) -> u64 {
 #[test]
 fn test_gcd() {
     assert_eq!(gcd(14, 15), 1);
-    assert_eq!(gcd(2 * 3 * 5 * 11 * 17,
-                   3 * 7 * 11 * 13 * 19),
-               3 * 11)
+    let n1 = 2 * 3 * 5 * 11 * 17;
+    let n2 = 3 * 7 * 11 * 13 * 19;
+    let d = 3 * 11;
+    assert_eq!(gcd(n1, n2), d)
 }
 
 // Keep a running GCD of inputs and print as needed.
@@ -35,7 +36,7 @@ fn main() {
         let arg = u64::from_str(&arg).expect("bad argument");
         d = match d {
             None => Some(arg),
-            Some(d) => Some(gcd(d, arg))
+            Some(d) => Some(gcd(d, arg)),
         }
     }
     if let Some(d) = d {
