@@ -1,8 +1,6 @@
 // Copyright © 2018 Bart Massey
 
-// Gcd example from Blandy & Orendorff, ch 1.
-// Calculate the common GCD of a list of numbers
-// presented as command-lne arguments.
+// Calculate some stuff based on command-line input.
 
 use std::env;
 use std::str::FromStr;
@@ -30,17 +28,41 @@ fn test_gcd() {
     assert_eq!(gcd(n1, n2), d)
 }
 
+// Compute the LCM of two numbers.
+fn lcm(n: u64, m: u64) -> u64 {
+    n * m / gcd(n, m)
+}
+
+#[test]
+fn test_lcm() {
+    assert_eq!(lcm(3, 2), 6);
+    let n1 = 2 * 3 * 11 * 17;
+    let n2 = 3 * 11 * 13 * 19;
+    let d = 2 * 3 * 11 * 13 * 17 * 19;
+    assert_eq!(lcm(n1, n2), d)
+}
+
 // Keep a running GCD of inputs and print as needed.
 fn main() {
-    let mut d = None;
-    for arg in env::args().skip(1) {
+    let mut args = env::args();
+    let _ = args.next();
+    let prog = args.next().unwrap();
+    let f = match &*prog {
+        "gcd" => gcd,
+        "lcm" => lcm,
+        "sum" => |n, m| n + m,
+        "product" => |n, m| n * m,
+        _ => panic!("unknown function"),
+    };
+    let mut a = None;
+    for arg in args {
         let arg = u64::from_str(&arg).expect("bad argument");
-        d = match d {
+        a = match a {
             None => Some(arg),
-            Some(d) => Some(gcd(d, arg)),
+            Some(a) => Some(f(a, arg)),
         }
     }
-    if let Some(d) = d {
-        println!("{}", d)
+    if let Some(a) = a {
+        println!("{}", a)
     }
 }
